@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine?</title>
+
+<style>
+  body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container {
+    text-align: center;
+    z-index: 2;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.25);
+  }
+
+  button {
+    font-size: 1.4rem;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  #yesBtn {
+    background-color: #ff2f68;
+    color: white;
+    margin-right: 20px;
+  }
+
+  #noBtn {
+    background-color: white;
+    color: #ff2f68;
+    position: absolute;
+  }
+
+  /* Floating hearts */
+  .heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+    opacity: 0.7;
+  }
+
+  @keyframes floatUp {
+    from {
+      transform: translateY(0);
+      opacity: 0.8;
+    }
+    to {
+      transform: translateY(-110vh);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Will you be my Valentine? 💖</h1>
+  <button id="yesBtn">Yes 💘</button>
+  <button id="noBtn">No 🙃</button>
+</div>
+
+<!-- Sound effects -->
+<audio id="popSound" preload="auto">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_4a239e81a0.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="yaySound" preload="auto">
+  <source src="https://cdn.pixabay.com/audio/2022/08/04/audio_2c1b6c1f6c.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const popSound = document.getElementById("popSound");
+  const yaySound = document.getElementById("yaySound");
+
+  let yesScale = 1;
+
+  function moveNoButton() {
+    popSound.currentTime = 0;
+    popSound.play();
+
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 80);
+
+    noBtn.style.left = `${x}px`;
+    noBtn.style.top = `${y}px`;
+
+    yesScale += 0.18;
+    yesBtn.style.transform = `scale(${yesScale})`;
+  }
+
+  // Desktop hover
+  noBtn.addEventListener("mouseover", moveNoButton);
+
+  // Mobile touch
+  noBtn.addEventListener("touchstart", moveNoButton);
+
+  yesBtn.addEventListener("click", () => {
+    yaySound.play();
+    document.body.innerHTML = `
+      <div style="
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:linear-gradient(135deg, #ff758c, #ff7eb3);
+        font-family:Arial;
+        color:white;
+        text-align:center;
+      ">
+        <h1 style="font-size:3rem;">
+          YAYYYYY 💕🥰<br>
+          Best Valentine EVER 💘
+        </h1>
+      </div>
+    `;
+  });
+
+  // Create floating hearts
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+    heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 7000);
+  }
+
+  setInterval(createHeart, 400);
+</script>
+
+</body>
+</html>
